@@ -42,7 +42,7 @@ const RegisterPage = props => {
   return (
     <div className={styles.wrap}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h3 className={styles.title}>login</h3>
+        <h3 className={styles.title}>Register</h3>
         <label>Email</label>
         <input
           name="email"
