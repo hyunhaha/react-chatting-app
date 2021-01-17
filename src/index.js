@@ -10,6 +10,7 @@ import ReduxThunk from 'redux-thunk';
 import Reducer from './redux/reducers';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
+import '@fortawesome/fontawesome-free/js/all.js';
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 
 ReactDOM.render(

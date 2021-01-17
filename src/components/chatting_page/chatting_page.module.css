@@ -1,0 +1,9 @@
+.chattingPage {
+  display: flex;
+}
+.sidePanel {
+  width: 300px;
+}
+.mainPanel {
+  width: 100%;
+}
