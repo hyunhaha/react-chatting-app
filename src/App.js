@@ -7,7 +7,7 @@ import RegisterPage from './components/register_page/register_page';
 import firebase from './firebase';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from './redux/actions/user_action';
+import { setUser, clearUser } from './redux/actions/user_action';
 function App() {
   const history = useHistory();
   let dispatch = useDispatch();
@@ -20,6 +20,7 @@ function App() {
         dispatch(setUser(user));
       } else {
         history.push('/login');
+        dispatch(clearUser(user))
       }
     })
   }, [history, dispatch])

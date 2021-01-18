@@ -2,9 +2,13 @@ import React from "react";
 import styles from "./user_panel.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import Image from "react-bootstrap/Image";
+import firebase from "../../../firebase";
 import { useSelector } from "react-redux";
 const UserPanel = props => {
   let user = useSelector(state => state.user.currentUser);
+  const onLogout = () => {
+    firebase.auth().signOut();
+  };
   return (
     <div>
       <h3 className={styles.title}>
@@ -27,7 +31,7 @@ const UserPanel = props => {
 
           <Dropdown.Menu>
             <Dropdown.Item href="#/action-1">프로필 변경</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">로그아웃</Dropdown.Item>
+            <Dropdown.Item onClick={onLogout}>로그아웃</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>
