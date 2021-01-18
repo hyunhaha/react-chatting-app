@@ -10,6 +10,7 @@
     "bootstrap": "^4.5.3",
     "firebase": "^8.2.2",
     "md5": "^2.3.0",
+    "mime-types": "^2.1.28",
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^16.14.0",
