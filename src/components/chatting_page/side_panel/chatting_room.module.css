@@ -1,0 +1,22 @@
+.chattingRoom {
+  display: flex;
+  /* justify-content: space-between; */
+  position: relative;
+  align-items: center;
+  width: 100%;
+}
+.paw {
+  margin-right: 3px;
+}
+.plus {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+.chattingList {
+  list-style: none;
+  padding: 0;
+}
+.color {
+  background-color: rgba(239, 251, 255, 0.418);
+}
