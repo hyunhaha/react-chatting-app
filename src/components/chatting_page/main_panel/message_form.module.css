@@ -1,0 +1,18 @@
+.button {
+  width: 100%;
+  background: rgb(79, 98, 148);
+  color: white;
+  text-transform: uppercase;
+  border: none;
+  margin-top: 40px;
+  padding: 20px;
+  font-size: 16px;
+  font-weight: 100;
+  letter-spacing: 10px;
+}
+.button:hover {
+  background: #9588c7;
+}
+.error {
+  color: red;
+}

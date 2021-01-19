@@ -92,7 +92,9 @@ export class ChattingRoom extends Component {
         onClick={() => {
           this.changeChattingRoom(room);
         }}
-        className={room.id === this.state.activeChatRoomId && styles.color}
+        className={
+          room.id === this.state.activeChatRoomId ? styles.color : undefined
+        }
       >
         # {room.name}
       </li>
