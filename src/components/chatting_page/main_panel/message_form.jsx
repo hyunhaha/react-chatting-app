@@ -7,15 +7,58 @@ import styles from "./message_form.module.css";
 import { useState } from "react";
 import firebase from "../../../firebase";
 import { useSelector } from "react-redux";
-
+import { useRef } from "react";
+import mime from "mime-types";
 const MessageForm = props => {
   const chatRoom = useSelector(state => state.chatRoom.currentChatRoom);
   const user = useSelector(state => state.user.currentUser);
+  const imageFileOpenRef = useRef();
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [percentage, setPercentage] = useState(0);
   const messagesRef = firebase.database().ref("messages");
-
+  const storageRef = firebase.storage().ref();
+  const handelImageOpen = () => {
+    imageFileOpenRef.current.click();
+  };
+  const handleUploadImage = event => {
+    const file = event.target.files[0];
+    const filePath = `/message/public/${file.name}`;
+    const metaData = { contentType: mime.lookup(file.name) };
+    setLoading(true);
+    try {
+      let uploadTask = storageRef.child(filePath).put(file, metaData);
+      uploadTask.on(
+        "state_changed",
+        UploadTaskSnapShot => {
+          const percetage = Math.round(
+            (UploadTaskSnapShot.bytesTransferred /
+              UploadTaskSnapShot.totalBytes) *
+              100
+          );
+          setPercentage(percetage);
+        },
+        err => {
+          console.error(err);
+          setLoading(false);
+        },
+        () => {
+          //저장된 파일 url가져오기
+          uploadTask.snapshot.ref.getDownloadURL().then(downLoadURL => {
+            // console.log(downLoadURL);
+            messagesRef
+              .child(chatRoom.id)
+              .push()
+              .set(creageMessage(downLoadURL));
+            setLoading(false);
+          });
+        }
+      );
+    } catch (error) {
+      alert(error);
+    }
+  };
   const handleChange = event => {
     setContent(event.target.value);
   };
@@ -69,7 +112,14 @@ const MessageForm = props => {
           />
         </Form.Group>
       </Form>
-      <ProgressBar variant="warning" label="60%" now={60} />
+      {!(percentage === 0 || percentage === 100) && (
+        <ProgressBar
+          variant="warning"
+          label={`${percentage}%`}
+          now={percentage}
+        />
+      )}
+
       <div>
         {errors.map(error => (
           <p className={styles.error} key={error}>
@@ -79,12 +129,29 @@ const MessageForm = props => {
       </div>
       <Row>
         <Col>
-          <button onClick={handleSubmit} className={styles.button}>
+          <button
+            onClick={handleSubmit}
+            className={styles.button}
+            disabled={loading ? true : false}
+          >
             send
           </button>
         </Col>
         <Col>
-          <button className={styles.button}>upload</button>
+          <input
+            type="file"
+            className={styles.fileInput}
+            ref={imageFileOpenRef}
+            onChange={handleUploadImage}
+            accept="image/jpeg, image/png"
+          />
+          <button
+            className={styles.button}
+            onClick={handelImageOpen}
+            disabled={loading ? true : false}
+          >
+            upload
+          </button>
         </Col>
       </Row>
     </div>

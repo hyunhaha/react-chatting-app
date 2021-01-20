@@ -48,7 +48,11 @@ const MessageHeader = props => (
                   as={Button}
                   variant="link"
                   eventKey="0"
-                  style={{ background: "none", color: "#000000" }}
+                  style={{
+                    background: "none",
+                    color: "#000000",
+                    fontSize: "14px",
+                  }}
                 >
                   Description
                 </Accordion.Toggle>
@@ -67,7 +71,11 @@ const MessageHeader = props => (
                   as={Button}
                   variant="link"
                   eventKey="0"
-                  style={{ background: "none", color: "#000000" }}
+                  style={{
+                    background: "none",
+                    color: "#000000",
+                    fontSize: "14px",
+                  }}
                 >
                   Post counts
                 </Accordion.Toggle>

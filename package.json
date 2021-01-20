@@ -11,6 +11,7 @@
     "firebase": "^8.2.2",
     "md5": "^2.3.0",
     "mime-types": "^2.1.28",
+    "moment": "^2.29.1",
     "react": "^16.14.0",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^16.14.0",
