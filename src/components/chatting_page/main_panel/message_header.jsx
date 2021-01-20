@@ -9,7 +9,7 @@ import Image from "react-bootstrap/Image";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-const MessageHeader = props => (
+const MessageHeader = ({ handleSearchChange }) => (
   <div className={styles.messageHeader}>
     <Container>
       <Row className={styles.row1}>
@@ -26,6 +26,7 @@ const MessageHeader = props => (
               </InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
+              onChange={handleSearchChange}
               placeholder="Search Messages"
               aria-label="Search"
               aria-describedby="basic-addon1"

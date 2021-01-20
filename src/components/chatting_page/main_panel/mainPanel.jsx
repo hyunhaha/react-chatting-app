@@ -10,6 +10,9 @@ class MainPanel extends Component {
     messagesRef: firebase.database().ref("messages"),
     messages: [],
     messageLoading: true,
+    searchTerm: "",
+    searchResults: [],
+    searchLoading: false,
   };
   componentDidMount() {
     const { chatRoom } = this.props;
@@ -17,6 +20,31 @@ class MainPanel extends Component {
       this.addMessageListener(chatRoom.id);
     }
   }
+  handleSearchMessage = () => {
+    const chatRoomMessages = [...this.state.messages];
+    const regex = new RegExp(this.state.searchTerm, "gi");
+    const searchResults = chatRoomMessages.reduce((acc, message) => {
+      if (
+        (message.content && message.content.match(regex)) ||
+        message.user.name.match(regex)
+      ) {
+        acc.push(message);
+      }
+      return acc;
+    }, []);
+    this.setState({ searchResults });
+  };
+  handleSearchChange = event => {
+    this.setState(
+      {
+        searchTerm: event.target.value,
+        searchLoading: true,
+      },
+      () => {
+        this.handleSearchMessage();
+      }
+    );
+  };
   addMessageListener = chatRoomId => {
     let messagesArray = [];
     this.setState({ messages: [] });
@@ -39,11 +67,16 @@ class MainPanel extends Component {
     ));
 
   render() {
-    const { messages } = this.state;
+    const { messages, searchResults, searchTerm } = this.state;
     return (
       <div className={styles.mainPanel}>
-        <MessageHeader />
-        <div className={styles.messageBox}>{this.renderMessages(messages)}</div>
+        <MessageHeader handleSearchChange={this.handleSearchChange} />
+
+        <div className={styles.messageBox}>
+          {searchTerm
+            ? this.renderMessages(searchResults)
+            : this.renderMessages(messages)}
+        </div>
 
         <MessageForm />
       </div>
