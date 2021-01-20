@@ -1,0 +1,7 @@
+.list {
+  list-style: none;
+  padding: 0;
+}
+.listItem {
+  background-color: rgba(149, 182, 224, 0.486);
+}

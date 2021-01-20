@@ -9,87 +9,101 @@ import Image from "react-bootstrap/Image";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-const MessageHeader = ({ handleSearchChange }) => (
-  <div className={styles.messageHeader}>
-    <Container>
-      <Row className={styles.row1}>
-        <Col className={styles.tr1td1}>
-          <i className="fas fa-unlock"></i>
-          <div className={styles.chattingRoomName}>Chatting room name</div>
-          <i className="fas fa-crown"></i>
-        </Col>
-        <Col className={styles.tr1td2}>
-          <InputGroup className="mb-3">
-            <InputGroup.Prepend>
-              <InputGroup.Text id="basic-addon1">
-                <i className="fas fa-search"></i>
-              </InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              onChange={handleSearchChange}
-              placeholder="Search Messages"
-              aria-label="Search"
-              aria-describedby="basic-addon1"
-            />
-          </InputGroup>
-        </Col>
-      </Row>
-      <div className={styles.userName}>
-        <div>
-          <Image src="" />
-          userName
+import { useSelector } from "react-redux";
+
+const MessageHeader = ({ handleSearchChange }) => {
+  const chatRoom = useSelector(state => state.chatRoom.currentChatRoom);
+  const isPrivateChatRoom = useSelector(
+    state => state.chatRoom.isPrivateChatRoom
+  );
+  return (
+    <div className={styles.messageHeader}>
+      <Container>
+        <Row className={styles.row1}>
+          <Col className={styles.tr1td1}>
+            {isPrivateChatRoom ? (
+              <i className="fas fa-lock"></i>
+            ) : (
+              <i className="fas fa-unlock"></i>
+            )}
+            <div className={styles.chattingRoomName}>
+              {chatRoom && chatRoom.name}
+            </div>
+            <i className="fas fa-crown"></i>
+          </Col>
+          <Col className={styles.tr1td2}>
+            <InputGroup className="mb-3">
+              <InputGroup.Prepend>
+                <InputGroup.Text id="basic-addon1">
+                  <i className="fas fa-search"></i>
+                </InputGroup.Text>
+              </InputGroup.Prepend>
+              <FormControl
+                onChange={handleSearchChange}
+                placeholder="Search Messages"
+                aria-label="Search"
+                aria-describedby="basic-addon1"
+              />
+            </InputGroup>
+          </Col>
+        </Row>
+        <div className={styles.userName}>
+          <div>
+            <Image src="" />
+            userName
+          </div>
         </div>
-      </div>
-      <Row>
-        <Col>
-          <Accordion>
-            <Card>
-              <Card.Header style={{ padding: " 0 1rem" }}>
-                <Accordion.Toggle
-                  as={Button}
-                  variant="link"
-                  eventKey="0"
-                  style={{
-                    background: "none",
-                    color: "#000000",
-                    fontSize: "14px",
-                  }}
-                >
-                  Description
-                </Accordion.Toggle>
-              </Card.Header>
-              <Accordion.Collapse eventKey="0">
-                <Card.Body>Hello! I'm the body</Card.Body>
-              </Accordion.Collapse>
-            </Card>
-          </Accordion>
-        </Col>
-        <Col>
-          <Accordion>
-            <Card>
-              <Card.Header style={{ padding: " 0 1rem" }}>
-                <Accordion.Toggle
-                  as={Button}
-                  variant="link"
-                  eventKey="0"
-                  style={{
-                    background: "none",
-                    color: "#000000",
-                    fontSize: "14px",
-                  }}
-                >
-                  Post counts
-                </Accordion.Toggle>
-              </Card.Header>
-              <Accordion.Collapse eventKey="0">
-                <Card.Body>Hello! I'm the body</Card.Body>
-              </Accordion.Collapse>
-            </Card>
-          </Accordion>
-        </Col>
-      </Row>
-    </Container>
-  </div>
-);
+        <Row>
+          <Col>
+            <Accordion>
+              <Card>
+                <Card.Header style={{ padding: " 0 1rem" }}>
+                  <Accordion.Toggle
+                    as={Button}
+                    variant="link"
+                    eventKey="0"
+                    style={{
+                      background: "none",
+                      color: "#000000",
+                      fontSize: "14px",
+                    }}
+                  >
+                    Description
+                  </Accordion.Toggle>
+                </Card.Header>
+                <Accordion.Collapse eventKey="0">
+                  <Card.Body>Hello! I'm the body</Card.Body>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
+          </Col>
+          <Col>
+            <Accordion>
+              <Card>
+                <Card.Header style={{ padding: " 0 1rem" }}>
+                  <Accordion.Toggle
+                    as={Button}
+                    variant="link"
+                    eventKey="0"
+                    style={{
+                      background: "none",
+                      color: "#000000",
+                      fontSize: "14px",
+                    }}
+                  >
+                    Post counts
+                  </Accordion.Toggle>
+                </Card.Header>
+                <Accordion.Collapse eventKey="0">
+                  <Card.Body>Hello! I'm the body</Card.Body>
+                </Accordion.Collapse>
+              </Card>
+            </Accordion>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  );
+};
 
 export default MessageHeader;
