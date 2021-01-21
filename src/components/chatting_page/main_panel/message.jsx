@@ -10,7 +10,9 @@ const Message = ({ message, user }) => {
     );
   };
   const isMessageMine = (message, user) => {
-    return message.user.id === user.uid ? true : false;
+    if (user) {
+      return message.user.id === user.uid;
+    }
   };
   return (
     <div>
@@ -25,9 +27,7 @@ const Message = ({ message, user }) => {
         />
         <Media.Body
           style={{
-            backgroundColor: isMessageMine(message, user)
-              ? "lightgray"
-              : "#ECECEC",
+            backgroundColor: isMessageMine(message, user) && "#ECECEC",
           }}
         >
           <h6>

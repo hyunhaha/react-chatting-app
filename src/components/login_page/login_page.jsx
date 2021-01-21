@@ -52,7 +52,7 @@ const LoginPage = props => {
 
         {errorFromSubmit && <p>{errorFromSubmit}</p>}
         <input type="submit" disabled={loading} />
-        <Link className={styles.link} to="login">
+        <Link className={styles.link} to="register">
           가입하기
         </Link>
       </form>
