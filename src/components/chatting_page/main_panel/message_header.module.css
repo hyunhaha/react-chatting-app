@@ -24,3 +24,6 @@
   display: flex;
   justify-content: flex-end;
 }
+.private {
+  cursor: pointer;
+}

@@ -92,7 +92,7 @@ export class ChattingRoom extends Component {
           notifications[index].count = dataSnapShot.numChildren() - lastTotal;
         }
       }
-      notifications[index].total = dataSnapShot.numChildren();
+      notifications[index].total = dataSnapShot.numChildren;
     }
     this.setState({ notifications });
   };
@@ -156,7 +156,7 @@ export class ChattingRoom extends Component {
   getNotificationCount = room => {
     let count = 0;
     this.state.notifications.forEach(notification => {
-      if (notification.id === room.id) {
+      if (notification === room.id) {
         count = notification.count;
       }
     });

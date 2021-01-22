@@ -1,0 +1,8 @@
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.color {
+  background-color: rgba(112, 223, 223, 0.479);
+}
