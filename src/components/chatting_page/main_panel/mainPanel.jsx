@@ -6,6 +6,7 @@ import styles from "./main_panel.module.css";
 import { connect } from "react-redux";
 import firebase from "../../../firebase";
 import { setUserPosts } from "../../../redux/actions/chatRoom_action";
+import Skeleton from "../../../commons/components/skeleton";
 class MainPanel extends Component {
   messageEndRef = React.createRef();
   state = {
@@ -142,14 +143,28 @@ class MainPanel extends Component {
         <span key={user.id}>{user.name}님이 채팅을 입력하고 있습니다.</span>
       );
     });
-
+  renderMessageSkeleton = loading =>
+    loading && (
+      <>
+        {[...Array(6)].map((e, idx) => (
+          <Skeleton key={idx} />
+        ))}
+      </>
+    );
   render() {
-    const { messages, searchResults, searchTerm, typingUsers } = this.state;
+    const {
+      messages,
+      searchResults,
+      searchTerm,
+      typingUsers,
+      messageLoading,
+    } = this.state;
     return (
       <div className={styles.mainPanel}>
         <MessageHeader handleSearchChange={this.handleSearchChange} />
 
         <div className={styles.messageBox}>
+          {this.renderMessageSkeleton(messageLoading)}
           {searchTerm
             ? this.renderMessages(searchResults)
             : this.renderMessages(messages)}
