@@ -124,16 +124,19 @@ const MessageHeader = ({ handleSearchChange }) => {
             </InputGroup>
           </Col>
         </Row>
-        <div className={styles.userName}>
-          <div>
-            <Image
-              src={chatRoom && chatRoom.createdBy.image}
-              roundedCircle
-              className={styles.chatRoomImg}
-            />
-            {chatRoom && chatRoom.createdBy.name}
+        {!isPrivateChatRoom && (
+          <div className={styles.userName}>
+            <div>
+              <Image
+                src={chatRoom && chatRoom.createdBy.image}
+                roundedCircle
+                className={styles.chatRoomImg}
+              />
+              {chatRoom && chatRoom.createdBy.name}
+            </div>
           </div>
-        </div>
+        )}
+
         <Row>
           <Col>
             <Accordion>

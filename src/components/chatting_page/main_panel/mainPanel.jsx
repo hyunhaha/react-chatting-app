@@ -14,13 +14,61 @@ class MainPanel extends Component {
     searchTerm: "",
     searchResults: [],
     searchLoading: false,
+    typingRef: firebase.database().ref("typing"),
+    typingUsers: [],
+    listenersList: [],
   };
   componentDidMount() {
     const { chatRoom } = this.props;
     if (chatRoom) {
       this.addMessageListener(chatRoom.id);
+      this.addTypingListener(chatRoom.id);
     }
   }
+  componentWillUnmount() {
+    this.state.messagesRef.off();
+    this.removeListeners(this.state.listenersList);
+  }
+  removeListeners = listeners => {
+    listeners.forEach(listener => {
+      listener.ref.child(listener.id).off(listener.event);
+    });
+  };
+  addTypingListener = chatRoomId => {
+    let typingUsers = [];
+    this.state.typingRef.child(chatRoomId).on("child_added", DataSnapShot => {
+      if (DataSnapShot.key !== this.props.user.uid) {
+        typingUsers = typingUsers.concat({
+          id: DataSnapShot.key,
+          name: DataSnapShot.val(),
+        });
+        this.setState({ typingUsers });
+      }
+    });
+    this.addToListenersList(chatRoomId, this.state.typingRef, "child_added");
+    this.state.typingRef.child(chatRoomId).on("child_removed", DataSnapShot => {
+      const index = typingUsers.findIndex(user => user.id === DataSnapShot.key);
+      if (index !== -1) {
+        typingUsers = typingUsers.filter(user => user.id !== DataSnapShot.key);
+        this.setState({ typingUsers });
+      }
+    });
+    this.addToListenersList(chatRoomId, this.state.typingRef, "child_removed");
+  };
+  addToListenersList = (id, ref, event) => {
+    //이미 등록된 리스너인가?
+    const index = this.state.listenersList.findIndex(listener => {
+      return (
+        listener.id === id && listener.ref === ref && listener.event === event
+      );
+    });
+    if (index === -1) {
+      const newListener = { id, ref, event };
+      this.setState({
+        listenersList: this.state.listenersList.concat(newListener),
+      });
+    }
+  };
   handleSearchMessage = () => {
     const chatRoomMessages = [...this.state.messages];
     const regex = new RegExp(this.state.searchTerm, "gi");
@@ -81,9 +129,16 @@ class MainPanel extends Component {
         user={this.props.user}
       />
     ));
+  renderTypingUsers = typingUsers =>
+    typingUsers.length > 0 &&
+    typingUsers.map(user => {
+      return (
+        <span key={user.id}>{user.name}님이 채팅을 입력하고 있습니다.</span>
+      );
+    });
 
   render() {
-    const { messages, searchResults, searchTerm } = this.state;
+    const { messages, searchResults, searchTerm, typingUsers } = this.state;
     return (
       <div className={styles.mainPanel}>
         <MessageHeader handleSearchChange={this.handleSearchChange} />
@@ -92,6 +147,7 @@ class MainPanel extends Component {
           {searchTerm
             ? this.renderMessages(searchResults)
             : this.renderMessages(messages)}
+          {this.renderTypingUsers(typingUsers)}
         </div>
 
         <MessageForm />

@@ -19,6 +19,7 @@ const MessageForm = props => {
   const [percentage, setPercentage] = useState(0);
   const messagesRef = firebase.database().ref("messages");
   const storageRef = firebase.storage().ref();
+  const typingRef = firebase.database().ref("typing");
   const isPrivateChatRoom = useSelector(
     state => state.chatRoom.isPrivateChatRoom
   );
@@ -99,6 +100,8 @@ const MessageForm = props => {
     //firebase에 메시지를 저장한느 부분
     try {
       await messagesRef.child(chatRoom.id).push().set(creageMessage());
+
+      typingRef.child(chatRoom.id).child(user.uid).remove();
       setLoading(false);
       setContent("");
       setErrors([]);
@@ -110,11 +113,19 @@ const MessageForm = props => {
       }, 5000);
     }
   };
+  const handleKeyDown = () => {
+    if (content) {
+      typingRef.child(chatRoom.id).child(user.uid).set(user.displayName);
+    } else {
+      typingRef.child(chatRoom.id).child(user.uid).remove();
+    }
+  };
   return (
     <div>
       <Form style={{ width: "100%" }} onSubmit={handleSubmit}>
         <Form.Group controlId="exampleForm.ControlTextarea1">
           <Form.Control
+            onKeyDown={handleKeyDown}
             value={content}
             onChange={handleChange}
             as="textarea"
