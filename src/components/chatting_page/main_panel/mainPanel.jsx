@@ -5,6 +5,7 @@ import MessageForm from "./message_form";
 import styles from "./main_panel.module.css";
 import { connect } from "react-redux";
 import firebase from "../../../firebase";
+import { setUserPosts } from "../../../redux/actions/chatRoom_action";
 class MainPanel extends Component {
   state = {
     messagesRef: firebase.database().ref("messages"),
@@ -54,7 +55,22 @@ class MainPanel extends Component {
         messages: messagesArray,
         messageLoading: false,
       });
+      this.userPostCount(messagesArray);
     });
+  };
+  userPostCount = messages => {
+    let usersPost = messages.reduce((acc, message) => {
+      if (message.user.name in acc) {
+        acc[message.user.name].count += 1;
+      } else {
+        acc[message.user.name] = {
+          image: message.user.image,
+          count: 1,
+        };
+      }
+      return acc;
+    }, {});
+    this.props.dispatch(setUserPosts(usersPost));
   };
   renderMessages = messages =>
     messages.length > 0 &&

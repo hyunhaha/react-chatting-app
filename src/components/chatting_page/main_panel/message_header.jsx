@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import firebase from "../../../firebase";
 import { useRef } from "react";
+import Media from "react-bootstrap/Media";
 const MessageHeader = ({ handleSearchChange }) => {
   const chatRoom = useSelector(state => state.chatRoom.currentChatRoom);
   const isPrivateChatRoom = useSelector(
@@ -21,6 +22,7 @@ const MessageHeader = ({ handleSearchChange }) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const usersRef = firebase.database().ref("users");
   const user = useSelector(state => state.user.currentUser);
+  const userPosts = useSelector(state => state.chatRoom.userPosts);
   useEffect(() => {
     if (user && chatRoom) {
       addFavoriteListener(chatRoom.id, user.uid);
@@ -53,7 +55,6 @@ const MessageHeader = ({ handleSearchChange }) => {
           }
         });
       setIsFavorited(prev => !prev); //현재 상태의 반대로
-      console.log("changea");
     } else {
       usersRef.child(`${user.uid}/favorited`).update({
         [chatRoom.id]: {
@@ -66,9 +67,27 @@ const MessageHeader = ({ handleSearchChange }) => {
         },
       });
       setIsFavorited(prev => !prev); //현재 상태의 반대로
-      console.log("changeb");
     }
   };
+  const renderUserPosts = userPosts =>
+    Object.entries(userPosts)
+      .sort((a, b) => b[1].count - a[1].count)
+      .map(([key, val], i) => (
+        <Media key={i}>
+          <img
+            style={{ borderRadius: "25px" }}
+            width={48}
+            height={48}
+            className="mr-3"
+            src={val.image}
+            alt={val.name}
+          />
+          <Media.Body>
+            <h6>{key}</h6>
+            <span>{val.count} 개</span>
+          </Media.Body>
+        </Media>
+      ));
 
   return (
     <div className={styles.messageHeader}>
@@ -107,8 +126,12 @@ const MessageHeader = ({ handleSearchChange }) => {
         </Row>
         <div className={styles.userName}>
           <div>
-            <Image src="" />
-            userName
+            <Image
+              src={chatRoom && chatRoom.createdBy.image}
+              roundedCircle
+              className={styles.chatRoomImg}
+            />
+            {chatRoom && chatRoom.createdBy.name}
           </div>
         </div>
         <Row>
@@ -130,7 +153,7 @@ const MessageHeader = ({ handleSearchChange }) => {
                   </Accordion.Toggle>
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
-                  <Card.Body>Hello! I'm the body</Card.Body>
+                  <Card.Body>{chatRoom && chatRoom.description}</Card.Body>
                 </Accordion.Collapse>
               </Card>
             </Accordion>
@@ -149,11 +172,13 @@ const MessageHeader = ({ handleSearchChange }) => {
                       fontSize: "14px",
                     }}
                   >
-                    Post counts
+                    Posts count
                   </Accordion.Toggle>
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
-                  <Card.Body>Hello! I'm the body</Card.Body>
+                  <Card.Body>
+                    {userPosts && renderUserPosts(userPosts)}
+                  </Card.Body>
                 </Accordion.Collapse>
               </Card>
             </Accordion>
