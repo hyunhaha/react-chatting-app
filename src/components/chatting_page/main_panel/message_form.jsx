@@ -113,7 +113,11 @@ const MessageForm = props => {
       }, 5000);
     }
   };
-  const handleKeyDown = () => {
+  const handleKeyDown = event => {
+    console.log("event", event.keyCode);
+    if (event.ctrlKey && event.keyCode === 13) {
+      handleSubmit();
+    }
     if (content) {
       typingRef.child(chatRoom.id).child(user.uid).set(user.displayName);
     } else {
