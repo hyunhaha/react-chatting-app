@@ -27,7 +27,7 @@ const MessageHeader = ({ handleSearchChange }) => {
     if (user && chatRoom) {
       addFavoriteListener(chatRoom.id, user.uid);
     }
-  }, []);
+  }, [user, chatRoom]);
   const addFavoriteListener = (chatRoomId, userId) => {
     usersRef
       .child(userId)

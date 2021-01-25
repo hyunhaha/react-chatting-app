@@ -3,10 +3,17 @@ import ChattingRoom from "./chatting_room";
 import DirectMessages from "./direct_messages";
 import Favorited from "./favorited";
 import UserPanel from "./user_panel";
-import styles from "./side_panel.module.css";
 const SidePanel = props => {
   return (
-    <div className={styles.sidePanel}>
+    <div
+      style={{
+        backgroundColor: "#7B83EB",
+        padding: "2rem",
+        minHeight: "100vh",
+        color: "white",
+        minWidth: "275px",
+      }}
+    >
       <UserPanel />
       <Favorited />
       <ChattingRoom />

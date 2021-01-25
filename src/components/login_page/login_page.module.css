@@ -27,7 +27,7 @@ h1 {
 }
 
 .form {
-  background: #0e101c;
+  /* background: #0e101c; */
   max-width: 400px;
   margin: 0 auto;
 }
@@ -117,9 +117,9 @@ hr {
 button {
   display: block;
   appearance: none;
-  margin-top: 40px;
+
   border: 1px solid #333;
-  margin-bottom: 20px;
+
   text-transform: uppercase;
   padding: 10px 20px;
   border-radius: 4px;

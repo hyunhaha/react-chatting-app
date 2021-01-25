@@ -43,13 +43,14 @@ const UserPanel = props => {
   return (
     <div>
       <h3 className={styles.title}>
-        <i className="fas fa-comment-alt" />
-        <div> Chatting</div>
+        <span>
+          <i className="fas fa-comment-alt" /> Chatting
+        </span>
       </h3>
-      <div className={styles.profile}>
+      <div style={{ display: "flex", marginBottom: "1rem" }}>
         <Image
           src={user && user.photoURL}
-          style={{ width: "30px", height: "30px" }}
+          style={{ width: "30px", height: "30px", marginTop: "3px" }}
           roundedCircle
         />
         <input

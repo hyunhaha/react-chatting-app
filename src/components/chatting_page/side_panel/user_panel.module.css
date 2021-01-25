@@ -3,11 +3,7 @@
   flex-direction: row;
   align-items: center;
 }
-.profile {
-  display: flex;
-  margin-bottom: 1rem;
-  align-items: center;
-}
+
 .file {
   display: none;
 }

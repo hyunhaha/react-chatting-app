@@ -76,7 +76,7 @@ class MainPanel extends Component {
       });
     }
   };
-  handleSearchMessage = () => {
+  handleSearchMessages = () => {
     const chatRoomMessages = [...this.state.messages];
     const regex = new RegExp(this.state.searchTerm, "gi");
     const searchResults = chatRoomMessages.reduce((acc, message) => {
@@ -89,22 +89,25 @@ class MainPanel extends Component {
       return acc;
     }, []);
     this.setState({ searchResults });
+    setTimeout(() => this.setState({ searchLoading: false }), 1000);
   };
+
   handleSearchChange = event => {
+    console.log(event.target.value);
     this.setState(
       {
         searchTerm: event.target.value,
         searchLoading: true,
       },
-      () => {
-        this.handleSearchMessage();
-      }
+      () => this.handleSearchMessages()
     );
   };
+
   addMessageListener = chatRoomId => {
     let messagesArray = [];
-    this.setState({ messages: [] });
+
     this.state.messagesRef.child(chatRoomId).on("child_added", DataSnapShot => {
+      console.log(DataSnapShot.val());
       messagesArray.push(DataSnapShot.val());
       this.setState({
         messages: messagesArray,
@@ -161,7 +164,10 @@ class MainPanel extends Component {
     } = this.state;
     return (
       <div className={styles.mainPanel}>
-        <MessageHeader handleSearchChange={this.handleSearchChange} />
+        <MessageHeader
+          messages={messages}
+          handleSearchChange={this.handleSearchChange}
+        />
 
         <div className={styles.messageBox}>
           {this.renderMessageSkeleton(messageLoading)}
