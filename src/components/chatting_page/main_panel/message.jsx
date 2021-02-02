@@ -39,7 +39,7 @@ const Message = ({ message, user }) => {
           {isImage(message) ? (
             <img
               style={{ maxWidth: "300px" }}
-              alt="image"
+              alt="profile"
               src={message.image}
             />
           ) : (

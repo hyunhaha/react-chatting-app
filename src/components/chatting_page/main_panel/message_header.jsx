@@ -12,7 +12,6 @@ import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import firebase from "../../../firebase";
-import { useRef } from "react";
 import Media from "react-bootstrap/Media";
 const MessageHeader = ({ handleSearchChange }) => {
   const chatRoom = useSelector(state => state.chatRoom.currentChatRoom);
@@ -36,15 +35,12 @@ const MessageHeader = ({ handleSearchChange }) => {
       .then(data => {
         if (data.val() !== null) {
           const chatRoomIds = Object.keys(data.val());
-          console.log(data.val(), "data.val()");
-          console.log(chatRoomIds, "chatRoomIds");
           const isAlreadyFavorited = chatRoomIds.includes(chatRoomId);
           setIsFavorited(isAlreadyFavorited);
         }
       });
   };
   const handleFavorite = () => {
-    console.log("click");
     if (isFavorited) {
       usersRef
         .child(`${user.uid}/favorited`)

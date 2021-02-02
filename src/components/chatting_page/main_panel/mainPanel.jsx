@@ -93,7 +93,6 @@ class MainPanel extends Component {
   };
 
   handleSearchChange = event => {
-    console.log(event.target.value);
     this.setState(
       {
         searchTerm: event.target.value,
@@ -107,7 +106,6 @@ class MainPanel extends Component {
     let messagesArray = [];
 
     this.state.messagesRef.child(chatRoomId).on("child_added", DataSnapShot => {
-      console.log(DataSnapShot.val());
       messagesArray.push(DataSnapShot.val());
       this.setState({
         messages: messagesArray,

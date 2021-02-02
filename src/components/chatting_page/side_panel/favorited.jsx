@@ -27,12 +27,10 @@ class Favorited extends Component {
   };
   addListListener = userId => {
     const { usersRef } = this.state;
-    console.log("works");
     usersRef
       .child(userId)
       .child("favorited")
       .on("child_added", dataSnapShot => {
-        console.log(dataSnapShot.val());
         const favoritedChatRooms = {
           id: dataSnapShot.key,
           ...dataSnapShot.val(),
