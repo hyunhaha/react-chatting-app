@@ -1,9 +1,17 @@
 .title {
   display: flex;
+  justify-content: left;
   flex-direction: row;
   align-items: center;
 }
-
+.titleName {
+  padding-left: 4px;
+}
 .file {
   display: none;
+}
+.profile {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
 }

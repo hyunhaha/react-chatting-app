@@ -126,17 +126,48 @@ const MessageForm = props => {
   };
   return (
     <div>
-      <Form style={{ width: "100%" }} onSubmit={handleSubmit}>
+      {/* <Form style={{ width: "100%" }}>
         <Form.Group controlId="exampleForm.ControlTextarea1">
-          <Form.Control
+          <Form.Control as="textarea" rows={3} />
+        </Form.Group>
+      </Form> */}
+      <div className={styles.sendBox}>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <textarea
+            className={styles.textarea}
+            cols="30"
+            rows="3"
+            placeholder="input text"
             onKeyDown={handleKeyDown}
             value={content}
             onChange={handleChange}
-            as="textarea"
-            rows={3}
+          ></textarea>
+        </form>
+        <div className={styles.sendBoxButton}>
+          <button
+            className={styles.button}
+            onClick={handelImageOpen}
+            disabled={loading ? true : false}
+          >
+            <i class="fas fa-paperclip"></i>
+          </button>
+          <button
+            onClick={handleSubmit}
+            className={styles.button}
+            disabled={loading ? true : false}
+          >
+            <i class="fas fa-paper-plane"></i>
+          </button>
+          <input
+            type="file"
+            className={styles.fileInput}
+            ref={imageFileOpenRef}
+            onChange={handleUploadImage}
+            accept="image/jpeg, image/png"
           />
-        </Form.Group>
-      </Form>
+        </div>
+      </div>
+
       {!(percentage === 0 || percentage === 100) && (
         <ProgressBar
           variant="warning"
@@ -152,33 +183,6 @@ const MessageForm = props => {
           </p>
         ))}
       </div>
-      <Row>
-        <Col>
-          <button
-            onClick={handleSubmit}
-            className={styles.button}
-            disabled={loading ? true : false}
-          >
-            send
-          </button>
-        </Col>
-        <Col>
-          <input
-            type="file"
-            className={styles.fileInput}
-            ref={imageFileOpenRef}
-            onChange={handleUploadImage}
-            accept="image/jpeg, image/png"
-          />
-          <button
-            className={styles.button}
-            onClick={handelImageOpen}
-            disabled={loading ? true : false}
-          >
-            upload
-          </button>
-        </Col>
-      </Row>
     </div>
   );
 };

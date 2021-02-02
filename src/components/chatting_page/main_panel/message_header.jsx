@@ -23,10 +23,10 @@ const MessageHeader = ({ handleSearchChange }) => {
   const user = useSelector(state => state.user.currentUser);
   const userPosts = useSelector(state => state.chatRoom.userPosts);
   useEffect(() => {
-    if (user && chatRoom) {
+    if (chatRoom && user) {
       addFavoriteListener(chatRoom.id, user.uid);
     }
-  }, [user, chatRoom]);
+  }, []);
   const addFavoriteListener = (chatRoomId, userId) => {
     usersRef
       .child(userId)
@@ -99,9 +99,9 @@ const MessageHeader = ({ handleSearchChange }) => {
               {chatRoom && chatRoom.name}
             </div>
             {!isPrivateChatRoom && (
-              <span className={styles.private} onClick={handleFavorite}>
-                {isFavorited ? "unfavorite" : `favorite`}
-              </span>
+              <button className={styles.private} onClick={handleFavorite}>
+                {isFavorited ? "♥" : "♡"}
+              </button>
             )}
           </Col>
           <Col className={styles.tr1td2}>
