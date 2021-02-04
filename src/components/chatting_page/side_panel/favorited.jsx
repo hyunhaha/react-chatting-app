@@ -81,7 +81,10 @@ class Favorited extends Component {
     return (
       <div>
         <i className="fas fa-bookmark"></i>
-        <span> Favorited (1)</span>
+        <span>
+          {" "}
+          Favorited ({favoritedChatRooms && favoritedChatRooms.length})
+        </span>
 
         <ul className={styles.list}>
           {this.renderFavoritedChatRooms(favoritedChatRooms)}

@@ -1,24 +1,15 @@
 import React, { useEffect } from "react";
 import styles from "./message_header.module.css";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
-import Image from "react-bootstrap/Image";
-import Accordion from "react-bootstrap/Accordion";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import firebase from "../../../firebase";
-import Media from "react-bootstrap/Media";
 const MessageHeader = ({ handleSearchChange }) => {
   const chatRoom = useSelector(state => state.chatRoom.currentChatRoom);
   const isPrivateChatRoom = useSelector(
     state => state.chatRoom.isPrivateChatRoom
   );
   const [isFavorited, setIsFavorited] = useState(false);
+  const [usersToggle, setUsersToggle] = useState(false);
   const usersRef = firebase.database().ref("users");
   const user = useSelector(state => state.user.currentUser);
   const userPosts = useSelector(state => state.chatRoom.userPosts);
@@ -65,125 +56,111 @@ const MessageHeader = ({ handleSearchChange }) => {
       setIsFavorited(prev => !prev); //현재 상태의 반대로
     }
   };
+  const handleUserPost = e => {
+    setUsersToggle(val => !val);
+  };
+  const focusOutUserPost = e => {
+    setUsersToggle(false);
+  };
   const renderUserPosts = userPosts =>
     Object.entries(userPosts)
       .sort((a, b) => b[1].count - a[1].count)
       .map(([key, val], i) => (
-        <Media key={i}>
+        <li key={i} className={styles.userPostsItem}>
           <img
-            style={{ borderRadius: "25px" }}
-            width={48}
-            height={48}
-            className="mr-3"
+            className={styles.userPostsItemImg}
             src={val.image}
             alt={val.name}
           />
-          <Media.Body>
-            <h6>{key}</h6>
-            <span>{val.count} 개</span>
-          </Media.Body>
-        </Media>
+          <div className={styles.userPostsItemDesc}>
+            <div className={styles.userPostsUserName}>{key}</div>
+            <div className={styles.userPostUserCount}>{val.count}개</div>
+          </div>
+        </li>
       ));
+  const renderUser = userPosts =>
+    Object.entries(userPosts)
+      .sort((a, b) => a[0] - b[0])
+      .map(
+        ([key, val], i) =>
+          i < 3 && (
+            <img
+              src={val.image}
+              alt={val.name}
+              key={i}
+              className={styles.usersImg}
+            />
+          )
+      );
 
   return (
     <div className={styles.messageHeader}>
-      <Container>
-        <Row className={styles.row1}>
-          <Col className={styles.tr1td1}>
-            {isPrivateChatRoom ? (
-              <i className="fas fa-lock"></i>
-            ) : (
-              <i className="fas fa-unlock"></i>
-            )}
-            <div className={styles.chattingRoomName}>
-              {chatRoom && chatRoom.name}
-            </div>
+      <div className={styles.chatRoomTitle}>
+        <div className={styles.lock}>
+          {isPrivateChatRoom ? (
+            <i className="fas fa-lock fa-1x"></i>
+          ) : (
+            <i className="fas fa-unlock fa-1x"></i>
+          )}
+        </div>
+        <div className={styles.chattingRoomName}>
+          {chatRoom && chatRoom.name}
+          <div className={styles.chattingRoomDesc}>
+            <div>{chatRoom && chatRoom.description}</div>
             {!isPrivateChatRoom && (
-              <button className={styles.private} onClick={handleFavorite}>
-                {isFavorited ? "♥" : "♡"}
-              </button>
+              <div className={styles.createdByName}>
+                <span className={styles.createdByText}>created by</span>
+                <img
+                  src={chatRoom && chatRoom.createdBy.image}
+                  alt={chatRoom && chatRoom.createdBy.name}
+                  className={styles.chatRoomImg}
+                />
+                <span>{chatRoom && chatRoom.createdBy.name}</span>
+              </div>
             )}
-          </Col>
-          <Col className={styles.tr1td2}>
-            <InputGroup className="mb-3">
-              <InputGroup.Prepend>
-                <InputGroup.Text id="basic-addon1">
-                  <i className="fas fa-search"></i>
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                onChange={handleSearchChange}
-                placeholder="Search Messages"
-                aria-label="Search"
-                aria-describedby="basic-addon1"
-              />
-            </InputGroup>
-          </Col>
-        </Row>
+          </div>
+        </div>
         {!isPrivateChatRoom && (
-          <div className={styles.userName}>
-            <div>
-              <Image
-                src={chatRoom && chatRoom.createdBy.image}
-                roundedCircle
-                className={styles.chatRoomImg}
-              />
-              {chatRoom && chatRoom.createdBy.name}
-            </div>
+          <button className={styles.private} onClick={handleFavorite}>
+            {isFavorited ? "♥" : "♡"}
+          </button>
+        )}
+        {!isPrivateChatRoom && (
+          <div>
+            <button
+              className={styles.users}
+              onClick={handleUserPost}
+              onBlur={focusOutUserPost}
+            >
+              <div className={styles.usersList}>
+                {userPosts && renderUser(userPosts)}
+              </div>
+              <span className={styles.usersCount}>
+                {userPosts && Object.keys(userPosts).length}
+              </span>
+            </button>
+            {
+              <ul
+                className={`${styles.usersPosts} ${
+                  usersToggle ? styles.show : undefined
+                }`}
+              >
+                {userPosts && renderUserPosts(userPosts)}
+              </ul>
+            }
           </div>
         )}
-
-        <Row>
-          <Col>
-            <Accordion>
-              <Card>
-                <Card.Header style={{ padding: " 0 1rem" }}>
-                  <Accordion.Toggle
-                    as={Button}
-                    variant="link"
-                    eventKey="0"
-                    style={{
-                      background: "none",
-                      color: "#000000",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Description
-                  </Accordion.Toggle>
-                </Card.Header>
-                <Accordion.Collapse eventKey="0">
-                  <Card.Body>{chatRoom && chatRoom.description}</Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            </Accordion>
-          </Col>
-          <Col>
-            <Accordion>
-              <Card>
-                <Card.Header style={{ padding: " 0 1rem" }}>
-                  <Accordion.Toggle
-                    as={Button}
-                    variant="link"
-                    eventKey="0"
-                    style={{
-                      background: "none",
-                      color: "#000000",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Posts count
-                  </Accordion.Toggle>
-                </Card.Header>
-                <Accordion.Collapse eventKey="0">
-                  <Card.Body>
-                    {userPosts && renderUserPosts(userPosts)}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            </Accordion>
-          </Col>
-        </Row>
-      </Container>
+      </div>
+      <div className={styles.search}>
+        <form className={styles.searchForm} action="search">
+          <input
+            className={styles.searchBar}
+            type="text"
+            onChange={handleSearchChange}
+            placeholder="search messages"
+          />
+        </form>
+      </div>
     </div>
   );
 };

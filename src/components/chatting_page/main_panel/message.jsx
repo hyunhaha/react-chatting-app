@@ -1,6 +1,7 @@
 import React from "react";
 import Media from "react-bootstrap/Media";
 import moment from "moment";
+import styles from "./message.module.css";
 const Message = ({ message, user }) => {
   const timeFromNow = timeStamp => moment(timeStamp).fromNow();
 
@@ -15,38 +16,39 @@ const Message = ({ message, user }) => {
     }
   };
   return (
-    <div>
-      <Media style={{ marginBottom: "3px" }}>
-        <img
-          style={{ borderRadius: "10px" }}
-          width={48}
-          height={48}
-          className="mr-3"
-          src={message.user.image}
-          alt="message user name"
-        />
-        <Media.Body
-          style={{
-            backgroundColor: isMessageMine(message, user) && "#ECECEC",
-          }}
-        >
-          <h6>
-            {message.user.name}
-            <span style={{ fontSize: "10px", color: "gray" }}>
-              {timeFromNow(message.timeStamp)}
-            </span>
-          </h6>
-          {isImage(message) ? (
-            <img
-              style={{ maxWidth: "300px" }}
-              alt="profile"
-              src={message.image}
-            />
-          ) : (
-            <div>{message.content}</div>
-          )}
-        </Media.Body>
-      </Media>
+    <div
+      className={
+        isMessageMine(message, user) ? styles.messageMine : styles.message
+      }
+    >
+      <img
+        className={styles.profileImg}
+        width={48}
+        height={48}
+        src={message.user.image}
+        alt="message user name"
+      />
+      <div
+        className={
+          isMessageMine(message, user)
+            ? styles.messageDataMine
+            : styles.messageData
+        }
+      >
+        <h6 className={isMessageMine(message, user) && styles.nameTimeMine}>
+          {!isMessageMine(message, user) && message.user.name}
+          <span className={styles.time}>{timeFromNow(message.timeStamp)}</span>
+        </h6>
+        {isImage(message) ? (
+          <img
+            style={{ maxWidth: "300px" }}
+            alt="profile"
+            src={message.image}
+          />
+        ) : (
+          <div>{message.content}</div>
+        )}
+      </div>
     </div>
   );
 };

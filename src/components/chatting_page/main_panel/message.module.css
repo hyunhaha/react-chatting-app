@@ -1,0 +1,26 @@
+.message {
+  display: flex;
+  margin-bottom: 5px;
+}
+.messageMine {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 5px;
+}
+.profileImg {
+  border-radius: 10px;
+}
+.messageData {
+  margin-left: 10px;
+}
+.messageDataMine {
+  margin-right: 10px;
+}
+.nameTimeMine {
+  text-align: right;
+}
+.time {
+  font-size: 10px;
+  color: gray;
+  margin-left: 5px;
+}

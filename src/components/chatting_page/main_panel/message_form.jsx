@@ -1,7 +1,4 @@
 import React from "react";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import styles from "./message_form.module.css";
 import { useState } from "react";
@@ -114,7 +111,6 @@ const MessageForm = props => {
     }
   };
   const handleKeyDown = event => {
-    console.log("event", event.keyCode);
     if (event.ctrlKey && event.keyCode === 13) {
       handleSubmit();
     }
@@ -126,11 +122,6 @@ const MessageForm = props => {
   };
   return (
     <div>
-      {/* <Form style={{ width: "100%" }}>
-        <Form.Group controlId="exampleForm.ControlTextarea1">
-          <Form.Control as="textarea" rows={3} />
-        </Form.Group>
-      </Form> */}
       <div className={styles.sendBox}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <textarea
@@ -149,14 +140,14 @@ const MessageForm = props => {
             onClick={handelImageOpen}
             disabled={loading ? true : false}
           >
-            <i class="fas fa-paperclip"></i>
+            <i className="fas fa-paperclip"></i>
           </button>
           <button
             onClick={handleSubmit}
             className={styles.button}
             disabled={loading ? true : false}
           >
-            <i class="fas fa-paper-plane"></i>
+            <i className="fas fa-paper-plane"></i>
           </button>
           <input
             type="file"
