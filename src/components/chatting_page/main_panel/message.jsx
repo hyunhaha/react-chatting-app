@@ -1,5 +1,4 @@
 import React from "react";
-import Media from "react-bootstrap/Media";
 import moment from "moment";
 import styles from "./message.module.css";
 const Message = ({ message, user }) => {
@@ -35,7 +34,11 @@ const Message = ({ message, user }) => {
             : styles.messageData
         }
       >
-        <h6 className={isMessageMine(message, user) && styles.nameTimeMine}>
+        <h6
+          className={
+            isMessageMine(message, user) ? styles.nameTimeMine : undefined
+          }
+        >
           {!isMessageMine(message, user) && message.user.name}
           <span className={styles.time}>{timeFromNow(message.timeStamp)}</span>
         </h6>

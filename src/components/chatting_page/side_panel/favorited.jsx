@@ -72,7 +72,7 @@ class Favorited extends Component {
         }
         key={chatRoom.id}
       >
-        {chatRoom.name}
+        # {chatRoom.name}
       </li>
     ));
 
@@ -81,11 +81,7 @@ class Favorited extends Component {
     return (
       <div>
         <i className="fas fa-bookmark"></i>
-        <span>
-          {" "}
-          Favorited ({favoritedChatRooms && favoritedChatRooms.length})
-        </span>
-
+        <span> Favorited ({favoritedChatRooms.length})</span>
         <ul className={styles.list}>
           {this.renderFavoritedChatRooms(favoritedChatRooms)}
         </ul>
